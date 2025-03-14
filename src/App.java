@@ -1,24 +1,19 @@
 import java.util.Random;
 
 public class App {
-    static int[] tamanhosTesteGrande = {500_000, 1_000_000, 2_000_000, 3_000_000, 5_000_000, 10_000_000};
-    static int[] tamanhosTesteMedio = {12_500, 25_000, 50_000, 100_000, 200_000};
-    static int[] tamanhosTestePequeno = {3, 6, 12, 24, 48};
+    static int[] tamanhosTesteGrande =  { 500_000, 1_000_000, 2_000_000, 3_000_000, 5_000_000, 10_000_000 };
+    static int[] tamanhosTesteMedio =   {  12_500,  25_000,  50_000,   100_000,   200_000 };
+    static int[] tamanhosTestePequeno = {       3,       6,      12,        24,        48 };
     static Random aleatorio = new Random(42);
-
-    public static void main(String[] args) {
-        executarTesteCodigo1();
-        executarTesteCodigo2();
-        executarTesteCodigo3();
-        executarTesteCodigo4();
-    }
 
     static int codigo1(int[] vetor) {
         int resposta = 0;
+        int operacoes = 0;
         for (int i = 0; i < vetor.length; i += 2) {
             resposta += vetor[i] % 2;
+            operacoes++;
         }
-        return resposta;
+        return operacoes;
     }
 
     static int codigo2(int[] vetor) {
@@ -31,24 +26,29 @@ public class App {
         return contador;
     }
 
-    static void codigo3(int[] vetor) {
+    static long codigo3(int[] vetor) {
+        long operacoes = 0;
         for (int i = 0; i < vetor.length - 1; i++) {
             int menor = i;
             for (int j = i + 1; j < vetor.length; j++) {
                 if (vetor[j] < vetor[menor])
                     menor = j;
+                operacoes++;
             }
             int temp = vetor[i];
             vetor[i] = vetor[menor];
             vetor[menor] = temp;
+            operacoes++;
         }
+        return operacoes;
     }
 
-    static int codigo4(int n) {
+    static int codigo4(int n, int[] operacoes) {
+        operacoes[0]++;
         if (n <= 2)
             return 1;
         else
-            return codigo4(n - 1) + codigo4(n - 2);
+            return codigo4(n - 1, operacoes) + codigo4(n - 2, operacoes);
     }
 
     static int[] gerarVetor(int tamanho) {
@@ -59,50 +59,34 @@ public class App {
         return vetor;
     }
 
-    static void executarTesteCodigo1() {
-        System.out.println("Executando Código 1...");
+    public static void main(String[] args) {
         for (int tamanho : tamanhosTesteGrande) {
             int[] vetor = gerarVetor(tamanho);
             long inicio = System.nanoTime();
-            int resultado = codigo1(vetor);
+            int operacoes1 = codigo1(vetor);
             long fim = System.nanoTime();
-            System.out.printf("Tamanho: %d | Resultado: %d | Tempo: %.4f ms\n",
-                    tamanho, resultado, (fim - inicio) / 1e6);
-        }
-    }
+            System.out.println("Código 1 - Tamanho: " + tamanho + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoes1);
 
-    static void executarTesteCodigo2() {
-        System.out.println("\nExecutando Código 2...");
-        for (int tamanho : tamanhosTesteGrande) {
-            int[] vetor = gerarVetor(tamanho);
-            long inicio = System.nanoTime();
-            int operacoes = codigo2(vetor);
-            long fim = System.nanoTime();
-            System.out.printf("Tamanho: %d | Operações: %d | Tempo: %.4f ms\n",
-                    tamanho, operacoes, (fim - inicio) / 1e6);
+            inicio = System.nanoTime();
+            int operacoes2 = codigo2(vetor);
+            fim = System.nanoTime();
+            System.out.println("Código 2 - Tamanho: " + tamanho + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoes2);
         }
-    }
 
-    static void executarTesteCodigo3() {
-        System.out.println("\nExecutando Código 3...");
         for (int tamanho : tamanhosTesteMedio) {
             int[] vetor = gerarVetor(tamanho);
             long inicio = System.nanoTime();
-            codigo3(vetor);
+            long operacoes3 = codigo3(vetor);
             long fim = System.nanoTime();
-            System.out.printf("Tamanho: %d | Tempo: %.4f ms\n",
-                    tamanho, (fim - inicio) / 1e6);
+            System.out.println("Código 3 - Tamanho: " + tamanho + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoes3);
         }
-    }
 
-    static void executarTesteCodigo4() {
-        System.out.println("\nExecutando Código 4...");
-        for (int tamanho : tamanhosTestePequeno) {
+        for (int n : tamanhosTestePequeno) {
+            int[] operacoes4 = {0};
             long inicio = System.nanoTime();
-            int resultado = codigo4(tamanho);
+            codigo4(n, operacoes4);
             long fim = System.nanoTime();
-            System.out.printf("N: %d | Resultado: %d | Tempo: %.4f ms\n",
-                    tamanho, resultado, (fim - inicio) / 1e6);
+            System.out.println("Código 4 - Valor de n: " + n + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoes4[0]);
         }
     }
 }
