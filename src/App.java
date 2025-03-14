@@ -1,6 +1,4 @@
 import java.util.Random;
-import sorts.Bubblesort;
-import sorts.ISort;
 
 public class App {
     static int[] tamanhosTesteGrande =  { 500_000, 1_000_000, 2_000_000, 3_000_000, 5_000_000, 10_000_000 };
@@ -92,41 +90,3 @@ public class App {
         }
     }
 }
-
-/*codigo medir o tempo de execução e contar as operações para Bubble Sort e Insertion Sort
-import java.util.Random;
-import sorts.BubbleSort;
-import sorts.ISort;
-
-public class App {
-    static int[] tamanhosTesteGrande = {500_000, 1_000_000, 2_000_000, 3_000_000, 5_000_000, 10_000_000};
-    static int[] tamanhosTesteMedio = {12_500, 25_000, 50_000, 100_000, 200_000};
-    static int[] tamanhosTestePequeno = {3, 6, 12, 24, 48};
-    static Random aleatorio = new Random(42);
-
-    static int[] gerarVetor(int tamanho) {
-        int[] vetor = new int[tamanho];
-        for (int i = 0; i < tamanho; i++) {
-            vetor[i] = aleatorio.nextInt(1, tamanho / 2);
-        }
-        return vetor;
-    }
-
-    public static void main(String[] args) {
-        for (int tamanho : tamanhosTesteMedio) {
-            int[] vetorBubble = gerarVetor(tamanho);
-            int[] vetorInsertion = vetorBubble.clone(); // Clonamos para garantir a mesma entrada
-
-            long inicio = System.nanoTime();
-            long operacoesBubble = BubbleSort.sort(vetorBubble);
-            long fim = System.nanoTime();
-            System.out.println("Bubble Sort - Tamanho: " + tamanho + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoesBubble);
-
-            inicio = System.nanoTime();
-            long operacoesInsertion = ISort.sort(vetorInsertion);
-            fim = System.nanoTime();
-            System.out.println("Insertion Sort - Tamanho: " + tamanho + ", Tempo: " + (fim - inicio) + " ns, Operações: " + operacoesInsertion);
-        }
-    }
-}
-*/
